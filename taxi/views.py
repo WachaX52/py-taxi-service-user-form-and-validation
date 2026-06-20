@@ -66,7 +66,11 @@ class CarDetailView(LoginRequiredMixin, generic.DetailView):
     model = Car
 
     def get_queryset(self):
-        return Car.objects.select_related("manufacturer").prefetch_related("drivers")
+        return (
+            Car.objects
+            .select_related("manufacturer")
+            .prefetch_related("drivers")
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -121,6 +125,14 @@ class DriverDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = User
     template_name = "taxi/driver_confirm_delete.html"
     success_url = reverse_lazy("taxi:driver-list")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["previous_page"] = self.request.META.get(
+            "HTTP_REFERER",
+            reverse_lazy("taxi:driver-list")
+        )
+        return context
 
 
 class ToggleAssignToCarView(LoginRequiredMixin, generic.View):

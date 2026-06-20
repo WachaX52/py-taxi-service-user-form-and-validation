@@ -1,19 +1,18 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 
 {% block content %}
-  <h1>Create driver</h1>
+  <h1>Delete driver</h1>
 
-  <form action="" method="post" novalidate>
+  <p>Are you sure you want to delete "{{ object }}"?</p>
+
+  <form action="" method="post">
     {% csrf_token %}
 
-    {{ form|crispy }}
-
-    <button type="submit" class="btn btn-primary">
-      Submit
+    <button type="submit" class="btn btn-danger">
+      Yes, delete
     </button>
 
-    <a href="{% url 'taxi:driver-list' %}" class="btn btn-secondary">
+    <a href="javascript:history.back()" class="btn btn-secondary">
       Cancel
     </a>
   </form>
